@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IBreadcrumb } from '../types/index'
 export default defineComponent({
   name: 'breadcrumb',
@@ -23,7 +23,6 @@ export default defineComponent({
     }
   },
   setup() {
-    const data = reactive({})
     return {}
   },
   components: {}
