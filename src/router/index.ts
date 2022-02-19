@@ -11,7 +11,7 @@ const Main = () => import('@/views/main/main.vue')
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/main'
+    redirect: '/main/analysis/dashboard'
   },
   {
     name: 'login',
