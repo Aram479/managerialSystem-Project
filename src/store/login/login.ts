@@ -36,11 +36,10 @@ const loginModule: Module<ILoginState, IRootState> = {
       state.userMenus = userMenus
       //获取utils下的map-menus过滤好的子路由
       const routes = mapMenusToRoutes(userMenus)
-      //将子路由添加到main路由
+      //将子路由添加到main路由,至于为什么不直接把数组，而要用for循环,是因为addRoute第二个参数类型所限
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
-
       //获取用户所有权限
       const permissions = mapMenusToPermissions(userMenus)
       //存储到vuex中
@@ -49,10 +48,11 @@ const loginModule: Module<ILoginState, IRootState> = {
   },
   actions: {
     /* 每次刷新页面保持state某些数据有值，不会被清空 */
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = localCache.getCache('token')
       if (token) {
         commit('changeToken', token)
+        dispatch('getInitialDataAction', null, { root: true })
       }
       const userInfo = localCache.getCache('userInfo')
       if (userInfo) {
@@ -64,12 +64,14 @@ const loginModule: Module<ILoginState, IRootState> = {
       }
     },
     //获取账号和密码值
-    async actLoginAction({ commit }, payload: IAccount) {
+    async actLoginAction({ commit, dispatch }, payload: IAccount) {
       /* 用户登录成功信息 */
       const loginResult = await actLoginRequest(payload)
       const { id, token } = loginResult.data
       commit('changeToken', token)
       localCache.setCache('token', token)
+      //当token有值的时候，调用根的action
+      dispatch('getInitialDataAction', null, { root: true })
       /* 用户请求信息 */
       const userInfoResult = await requestUserInfoById(id)
       const userInfo = userInfoResult.data
@@ -82,7 +84,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
       /* 登录成功后跳转首页 */
-      router.push('/main')
+      router.push('/main/analysis/dashboard')
     }
 
     //获取手机号和验证码值

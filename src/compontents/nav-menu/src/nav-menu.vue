@@ -19,7 +19,7 @@
       <!-- 母菜单 -->
       <el-sub-menu
         :index="root.id + ''"
-        v-for="root in userMenus"
+        v-for="root in userMenus.slice(0, 3)"
         :key="root.id"
       >
         <template #title>
@@ -37,6 +37,7 @@
           :key="child.id"
           :class="actNum == child.id ? 'active-bgc' : ''"
           @click="menuItemClick(child)"
+          v-show="child.id !== 39 && child.id !== 3 && child.id !== 15"
         >
           <template #title>
             <!-- 子图标 -->

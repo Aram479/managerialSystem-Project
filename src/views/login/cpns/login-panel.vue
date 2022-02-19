@@ -11,15 +11,6 @@
         </template>
         <LoginAccount ref="accountRef"></LoginAccount>
       </el-tab-pane>
-      <el-tab-pane name="phone">
-        <template #label>
-          <span>
-            <el-icon><Iphone /></el-icon>
-            手机登录
-          </span>
-        </template>
-        <LoginPhone ref="phoneRef"></LoginPhone>
-      </el-tab-pane>
     </el-tabs>
     <div class="account-control">
       <el-checkbox v-model="isKeepPsd" label="记住密码"></el-checkbox>
@@ -34,12 +25,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { ElNotification } from 'element-plus'
+import { defineComponent, h, ref } from 'vue'
 import LoginAccount from './login-account.vue'
 import LoginPhone from './login-phone.vue'
 export default defineComponent({
   name: 'login-panel',
   setup() {
+    ElNotification({
+      title: '提示',
+      message: h(
+        'i',
+        { style: 'color: teal' },
+        '默认账号:coderwhy   默认密码:123456'
+      )
+    })
     /* 定义属性 */
     const accountRef = ref<InstanceType<typeof LoginAccount>>()
     const phoneRef = ref<InstanceType<typeof LoginPhone>>()
@@ -63,8 +63,7 @@ export default defineComponent({
     }
   },
   components: {
-    LoginAccount,
-    LoginPhone
+    LoginAccount
   }
 })
 </script>

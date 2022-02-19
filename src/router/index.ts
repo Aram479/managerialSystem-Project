@@ -1,4 +1,9 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+  RouteRecordRaw
+} from 'vue-router'
 import localCache from '@/utils/cache'
 import { firstMenu } from '@/utils/map-menus'
 const Login = () => import('@/views/login/login.vue')
@@ -26,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(), //hash模式
   routes
 })
 router.beforeEach((to, from) => {

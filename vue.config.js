@@ -2,27 +2,29 @@ const path = require('path')
 
 module.exports = {
   outputDir: './build',
-  publicPath: '/',
-  // configureWebpack: {
-  //   resolve: {
-  //     alias: {
-  //       views: '@/views'
-  //     }
-  //   }
-  // }
+  publicPath: './',
+  configureWebpack: {
+    devtool: 'source-map',
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+        views: '@/views',
+        components: '@/components'
+      }
+    }
+  },
   // configureWebpack: (config) => {
   //   config.resolve.alias = {
   //     '@': path.resolve(__dirname, 'src'),
   //     views: '@/views'
   //   }
   // },
-  chainWebpack: (config) => {
-    config.resolve.alias
-      .set('@', path.resolve(__dirname, 'src'))
-      .set('components', '@/components')
-  },
+  // chainWebpack: (config) => {
+  //   config.resolve.alias
+  //     .set('@', path.resolve(__dirname, 'src'))
+  //     .set('components', '@/components')
+  // },
   devServer: {
-    open: true, // 配置自动启动浏览器
     hotOnly: true, // 热更新
     proxy: {
       /* 添加多个跨域请求：/admin、/api... */

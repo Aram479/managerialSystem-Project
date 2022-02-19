@@ -3,12 +3,12 @@ import type { AxiosInstance } from 'axios'
 import { ZPRequestInterceptors, ZPRequestConfig } from './types'
 import { showLoading, hideLoading } from './loading' //封装loading组件
 
-const DEAFULT_LOADING = true //设置常量默认值
+const DEAFULT_LOADING = true //设置常量默认值,显示关闭loading
 
 class ZPRequest {
-  //存储接口数据
+  //存储axios.create各种方法
   instance: AxiosInstance
-  //存储hooks
+  //存储 实例 的请求和响应拦截器
   interceptors?: ZPRequestInterceptors
   isLoading: boolean
   //constructor获取传递来的接口参数
@@ -17,8 +17,7 @@ class ZPRequest {
     this.interceptors = config.interceptors
     //如果config.isLoading没有传值，则默认值为true
     this.isLoading = config.isLoading ?? DEAFULT_LOADING
-
-    /* 实例拦截：拦截实例请求 */
+    /* 实例拦截：拦截从实例获取的拦截器 */
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptor,
       this.interceptors?.requestInterceptorCatch

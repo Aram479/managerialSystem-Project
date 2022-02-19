@@ -10,12 +10,13 @@ export function mapMenusToRoutes(userMenus: any[]): Array<RouteRecordRaw> {
 
   /* 利用以下代码是为解决一个一个导入router/main的ts文件的麻烦 */
   //使用require.context语法获取所有main中的ts文件的相对路径
-  const routeFiles = require.context('../router/main', true, /\.ts/)
+  const routeFiles = require.context('@/router/main', true, /\.ts/)
   //遍历相对路径
   routeFiles.keys().forEach((key) => {
-    //获取所有ts文件
-    const route = require('../router/main' + key.replace(/\./, ''))
-    //将路由文件存入allRoutes
+    //获取所有ts文件导入的内容
+    //也可const route = routeFiles(key)  require.context返回的是个函数
+    const route = require('@/router/main' + key.replace(/\./, ''))
+    //将路由文件内容存入allRoutes
     allRoutes.push(route.default)
   })
   /* 进一步严谨 */
@@ -80,4 +81,20 @@ export function mapMenusToPermissions(userMenus: any[]) {
   }
   _recurseGetPermission(userMenus)
   return permissions
+}
+
+//遍历出所有叶子节点
+export function getMenuLeafkeys(menuList: any[]) {
+  const leftKeys: number[] = []
+  const _recurseGetLeaf = (menuList: any[]) => {
+    for (const menu of menuList) {
+      if (menu.children) {
+        _recurseGetLeaf(menu.children)
+      } else {
+        leftKeys.push(menu.id)
+      }
+    }
+  }
+  _recurseGetLeaf(menuList)
+  return leftKeys
 }

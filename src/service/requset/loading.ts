@@ -8,7 +8,7 @@ const startLoading = () => {
     text: '加载中……', // 加载动画的文字
     spinner: 'el-icon-loading', // 引入的loading图标
     target: '.el-main', // 需要遮罩的区域
-    background: 'rgba(0, 0, 0, 0)', // 遮罩背景颜色
+    background: '#fff', // 遮罩背景颜色
     customClass: 'mask' // 遮罩层新增类名
   })
 }

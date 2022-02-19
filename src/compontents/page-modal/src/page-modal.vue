@@ -2,6 +2,8 @@
   <div id="page-modal">
     <el-dialog v-model="isDialog" title="新建用户" width="30%" center>
       <ZpForm v-bind="modalConfig" v-model="formData"></ZpForm>
+      <!-- 默认插槽 -->
+      <slot></slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="isDialog = false">取消</el-button>
@@ -24,6 +26,10 @@ export default defineComponent({
       type: Object,
       required: true
     },
+    otherInfo: {
+      type: Object,
+      default: () => ({})
+    },
     pageName: {
       type: String,
       required: true
@@ -34,15 +40,15 @@ export default defineComponent({
     //提对话框显示和隐藏
     const isDialog = ref(false)
     const formData: any = ref({})
-
+    const newOredit = ref('')
     /* 新建或编辑确定事件 */
     const handleConfirmClick = () => {
       isDialog.value = false
-      if (!props.modalConfig.formItems[2].isHidden) {
+      if (newOredit.value === 'new') {
         //新建
         store.dispatch('system/createPageDataAction', {
           pageName: props.pageName,
-          newData: { ...formData.value }
+          newData: { ...formData.value, ...props.otherInfo }
         })
       } else {
         //编辑
@@ -50,7 +56,7 @@ export default defineComponent({
         const editData = _.omit(formData.value, ['id', 'createAt', 'updateAt'])
         store.dispatch('system/editPageDataAction', {
           pageName: props.pageName,
-          editData: { ...editData },
+          editData: { ...editData, ...props.otherInfo },
           id: formData.value.id
         })
       }
@@ -58,6 +64,7 @@ export default defineComponent({
     return {
       isDialog,
       formData,
+      newOredit,
       handleConfirmClick
     }
   },

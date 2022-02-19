@@ -11,7 +11,7 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item class="user-logout">
+          <el-dropdown-item class="user-logout" @click="handleExitClick">
             <template #>
               <el-icon class="el-icon--right">
                 <switch-button />
@@ -44,14 +44,23 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import { useStore } from '@/store'
+import localCache from '@/utils/cache'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'nav-info',
   setup() {
     const store = useStore()
+    const router = useRouter()
     //获取用户名
     const userName = computed(() => store.state.login.userInfo.name)
+    /* 退出登录 */
+    const handleExitClick = () => {
+      localCache.delCache('token')
+      router.push('/login')
+    }
     return {
-      userName
+      userName,
+      handleExitClick
     }
   },
   components: {}
